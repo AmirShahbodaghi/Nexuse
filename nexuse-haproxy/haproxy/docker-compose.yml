@@ -1,0 +1,37 @@
+services:
+
+  nexus1:
+    image: sonatype/nexus3
+    container_name: nexus1
+    ports:
+      - "8081:8081"
+    volumes:
+      - nexus1-data:/nexus-data
+    restart: always
+
+  nexus2:
+    image: sonatype/nexus3
+    container_name: nexus2
+    ports:
+      - "8082:8081"
+    volumes:
+      - nexus2-data:/nexus-data
+    restart: always
+
+  nexus3:
+    image: sonatype/nexus3
+    container_name: nexus3
+    ports:
+      - "8083:8081"
+    volumes:
+      - nexus3-data:/nexus-data
+    restart: always
+
+networks:
+  nexus-net:
+    external: true
+
+volumes:
+  nexus1-data:
+  nexus2-data:
+  nexus3-data:

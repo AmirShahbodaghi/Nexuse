@@ -1,59 +1,41 @@
-# Nexus Repository Installation with Docker Compose
+# Nexus Repository Routing with HAProxy
 
-This repository provides a step-by-step guide to setting up a Nexus Repository Manager using Docker Compose.
+## Overview
 
-## Prerequisites
+This setup uses **HAProxy** to route traffic to three separate **Nexus Repository Manager** instances based on the type of repository:
 
-Before proceeding, ensure you installed the docker and docker docker-compose
+- Maven artifacts → Nexus 1
+- NuGet packages → Nexus 2
+- Other repositories → Nexus 3
 
-### 1. Clone the Repository
+HAProxy acts as a single entry point and distributes traffic to the appropriate backend service based on the exposed frontend ports.
 
-mkdir nexus-repository
-cd nexus-repository
+---
 
-### 2. Create the `docker-compose.yml` File
+## Architecture
 
-Create a `docker-compose.yml` and use 
+Client
+│
+├── Maven (port 9001) → Nexus1 (8081)
+├── NuGet (port 9002) → Nexus2 (8082)
+└── Other (port 9003) → Nexus3 (8083)
 
-### 3. Start Nexus Repository
+---
 
-Run the following command to start Nexus Repository:
+## Components
 
-```sh
-docker-compose up -d
-```
+### Nexus Repositories
 
-This command will download the Nexus Repository image, create a container, and start it in detached mode.
+| Service | Purpose | Port |
+|--------|--------|------|
+| Nexus1 | Maven repositories | 8081 |
+| Nexus2 | NuGet repositories | 8082 |
+| Nexus3 | Other formats      | 8083 |
 
-### 4. Access Nexus Repository
+### HAProxy
 
-Once the container is up and running, open your web browser and navigate to:
+- Acts as reverse proxy
+- Routes traffic based on frontend port
+- Provides unified access layer
 
-```
-http://localhost:8081
-```
-
-## Usage
-
-### Default Admin Credentials
-
-- **Username:** `admin`
-- **Password:** Retrieve from the container logs:
-
-  docker-compose logs nexus | grep "admin password"
-
-**Note:** Change the default password after the first login for security purposes.
-
-## Persistent Data
-
-The Nexus data is stored in a Docker volume named `nexus-data`, ensuring that your data persists across container restarts.
-
-## Stopping the Service
-
-To stop the Nexus Repository Manager, run:
-
-```sh
-docker-compose down
-```
-
-
+---

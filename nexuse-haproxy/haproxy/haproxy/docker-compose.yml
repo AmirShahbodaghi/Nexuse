@@ -1,0 +1,16 @@
+services:
+
+  haproxy:
+    image: haproxy:latest
+    container_name: haproxy
+    ports:
+      - "9001:9001"   # Maven
+      - "9002:9002"   # NuGet
+      - "9003:9003"   # Other
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    restart: always
+
+networks:
+  nexus-net:
+   external: true
