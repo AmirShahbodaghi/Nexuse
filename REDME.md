@@ -1,6 +1,4 @@
-# Nexus Repository Routing with HAProxy
-
-## Overview
+## nexuse-haproxy
 
 This setup uses **HAProxy** to route traffic to three separate **Nexus Repository Manager** instances based on the type of repository:
 
@@ -9,16 +7,6 @@ This setup uses **HAProxy** to route traffic to three separate **Nexus Repositor
 - Other repositories → Nexus 3
 
 HAProxy acts as a single entry point and distributes traffic to the appropriate backend service based on the exposed frontend ports.
-
----
-
-## Architecture
-
-Client
-│
-├── Maven (port 9001) → Nexus1 (8081)
-├── NuGet (port 9002) → Nexus2 (8082)
-└── Other (port 9003) → Nexus3 (8083)
 
 ---
 
